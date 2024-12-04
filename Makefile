@@ -9,6 +9,8 @@ SRC	=	main.c	\
 		my_top.c	\
 		setting_up.c	\
 		my_get.c	\
+		my_get2.c	\
+		init.c	\
 
 NAME	=	my_top
 

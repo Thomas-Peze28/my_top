@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <ncurses.h>
 #include <dirent.h>
+#include <string.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -113,5 +114,8 @@ char **my_gettasks_stopped(void);
 int count_tasks(char *path);
 void my_getcpupercent(sys_info_t *SYS);
 void my_get_users_number(sys_info_t *SYS);
+int read_dir(char *path);
+int my_char_isnum(char const letter);
+void init(sys_info_t *SYS);
 
 #endif /* MY_ */

@@ -6,39 +6,6 @@
 */
 #include "my.h"
 
-char **my_getcpuusage(void)
-{
-    char *str = fs_return_full_open_file("/proc/stat");
-    char **arr = my_str_to_word_array02(str, '\n');
-    char **arr2 = my_str_to_word_array02(arr[0], ' ');
-
-    return arr2;
-}
-
-void my_getcpupercent(sys_info_t *SYS)
-{
-    char **temp;
-    char **info = my_getcpuusage();
-    float *delta = malloc(sizeof(float) * 9 + 1);
-    float total = 0;
-
-    sleep(1);
-    temp = my_getcpuusage();
-    for (int i = 1; i < 9; i++) {
-        delta[i] = atof(temp[i]) - atof(info[i]);
-        total += delta[i];
-    }
-    SYS->cpu.us = (delta[1] / total) * 100;
-    SYS->cpu.ni = (delta[2] / total) * 100;
-    SYS->cpu.sy = (delta[3] / total) * 100;
-    SYS->cpu.id = (delta[4] / total) * 100;
-    SYS->cpu.wa = (delta[5] / total) * 100;
-    SYS->cpu.hi = (delta[6] / total) * 100;
-    SYS->cpu.si = (delta[7] / total) * 100;
-    SYS->cpu.st = (delta[8] / total) * 100;
-    free(delta);
-}
-
 int count_tasks(char *path)
 {
     DIR *dir;
@@ -62,17 +29,49 @@ int count_tasks(char *path)
 
 void my_get_users_number(sys_info_t *SYS)
 {
-    struct utmp *entry;
+    struct utmp entry;
     int count = 0;
+    FILE *file = fopen("/var/run/utmp", "r");
 
-    setutent();
-    entry = getutent();
-    while (entry != NULL) {
-        if (entry->ut_type == USER_PROCESS) {
+    if (file == NULL) {
+        return;
+    }
+    while (fread(&entry, sizeof(entry), 1, file)) {
+        if (entry.ut_type == USER_PROCESS) {
             count++;
         }
-        entry = getutent();
     }
-    SYS->user_count = count - 1;
-    endutent();
+    fclose(file);
+    SYS->user_count = count;
+}
+
+void read_status(char *pid)
+{
+    char *buffer = malloc(strlen("/proc/") + strlen(pid) + 1);
+    char *filepath;
+
+    strcpy(buffer, "/proc/");
+    filepath = strcat(buffer, pid);
+    printf("%s\n", filepath);
+}
+
+int read_dir(char *path)
+{
+    DIR *dir;
+    struct dirent *info_dir;
+    char *pid;
+
+    dir = opendir(path);
+    if (dir == NULL)
+        return 84;
+    info_dir = readdir(dir);
+    while (info_dir) {
+        if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0])) {
+            pid = info_dir->d_name;
+            read_status(pid);
+        }
+        info_dir = readdir(dir);
+    }
+    closedir(dir);
+    return 0;
 }

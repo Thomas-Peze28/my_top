@@ -36,6 +36,7 @@ SRC	=	my_compute_power_rec.c	\
 		my_str_to_word_array.c	\
 		my_str_to_word_array_02.c	\
 		my_show_word_array.c	\
+		my_char_isnum.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
