@@ -38,15 +38,17 @@ void display_window(sys_info_t SYS)
         init(&SYS);
         print_first_line(SYS);
         mvprintw(1, 0, "Tasks: %d total, %d running, %d sleeping"
-            ", %d stopped %d zombie\n"
+            ", %d stopped, %d zombie\n"
             , TASK.total, TASK.running, TASK.sleeping
             , TASK.stopped, TASK.zombie);
         print_third_line(SYS);
         display_mem(SYS);
         attron(A_REVERSE);
-        mvprintw(6, 0, "PID USER    PR  NI    VIRT    RES"
-            "SHR S  %%CPU  %%MEM    TIME+ COMMAND");
+        mvprintw(6, 0, "%7s %-7s    PR  NI    VIRT    RES"
+            "SHR S  %%CPU  %%MEM    TIME+ COMMAND", "PID", "USER");
         attroff(A_REVERSE);
+        read_pid();
+        read_user();
         refresh();
     }
     endwin();
@@ -64,9 +66,6 @@ int main(void)
     display_window(SYS);
     init(&SYS);
     printf("TOTAL %d\n", SYS.tasks.total);
-    printf("RUNNING %d\n", SYS.tasks.running);
-    printf("SLEEP : %d\n", SYS.tasks.sleeping);
-    printf("STOPPED : %d\n", SYS.tasks.stopped);
-    printf("ZOMBIE : %d\n", SYS.tasks.zombie);
+    get_uid("/proc/1/status");
     return 0;
 }

@@ -11,6 +11,8 @@ SRC	=	main.c	\
 		my_get.c	\
 		my_get2.c	\
 		my_get_task_header.c	\
+		list_pid.c	\
+		list_user.c	\
 		init.c	\
 
 NAME	=	my_top
