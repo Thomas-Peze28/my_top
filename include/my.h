@@ -112,12 +112,13 @@ int my_show_word_array(char *const *tab);
 int count_tasks(char *path);
 void my_getcpupercent(sys_info_t *SYS);
 void my_get_users_number(sys_info_t *SYS);
-char *buildpath(char *pid);
+char *buildpath_status(char *pid);
 int get_uid(char *filepath);
 int read_dir_tasks(char *path, sys_info_t *SYS);
 int my_char_isnum(char const letter);
 int read_pid(void);
 int read_user(void);
+int read_priority(void);
 void init(sys_info_t *SYS);
 
 #endif /* MY_ */

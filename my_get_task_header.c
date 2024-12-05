@@ -15,7 +15,7 @@ char get_status(char *filepath)
     return arr2[1][0];
 }
 
-char *buildpath(char *pid)
+char *buildpath_status(char *pid)
 {
     char *buffer = malloc(strlen("/proc/") + strlen(pid) + 1);
     char *buffer2;
@@ -57,7 +57,7 @@ int read_dir_tasks(char *path, sys_info_t *SYS)
     while (info_dir) {
         if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0])) {
             pid = info_dir->d_name;
-            count_tasks_status(SYS, buildpath(pid));
+            count_tasks_status(SYS, buildpath_status(pid));
         }
         info_dir = readdir(dir);
     }

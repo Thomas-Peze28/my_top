@@ -13,6 +13,7 @@ SRC	=	main.c	\
 		my_get_task_header.c	\
 		list_pid.c	\
 		list_user.c	\
+		list_priority.c	\
 		init.c	\
 
 NAME	=	my_top

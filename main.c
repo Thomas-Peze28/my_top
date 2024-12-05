@@ -44,11 +44,12 @@ void display_window(sys_info_t SYS)
         print_third_line(SYS);
         display_mem(SYS);
         attron(A_REVERSE);
-        mvprintw(6, 0, "%7s %-7s    PR  NI    VIRT    RES"
-            "SHR S  %%CPU  %%MEM    TIME+ COMMAND", "PID", "USER");
+        mvprintw(6, 0, "%7s %-7s %3s %3s    VIRT    RES"
+            "SHR S  %%CPU  %%MEM    TIME+ COMMAND", "PID", "USER", "PR", "NI");
         attroff(A_REVERSE);
         read_pid();
         read_user();
+        read_priority();
         refresh();
     }
     endwin();

@@ -30,7 +30,7 @@ int read_user(void)
     info_dir = readdir(dir);
     while (info_dir) {
         if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0])) {
-            pwd = getpwuid(get_uid(buildpath(info_dir->d_name)));
+            pwd = getpwuid(get_uid(buildpath_status(info_dir->d_name)));
             mvprintw(line, 8, "%-7s\n", pwd->pw_name);
             line++;
         }
