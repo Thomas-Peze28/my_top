@@ -49,8 +49,8 @@ typedef struct cpu_info_s {
 
 typedef struct task_info_s {
     int total;
-    char *running;
-    char *stopped;
+    int running;
+    int stopped;
     int sleeping;
     int zombie;
 } task_info_t;
@@ -109,12 +109,10 @@ char **my_getloaddavg(void);
 char **my_getmemusage(void);
 char **my_gettime(void);
 int my_show_word_array(char *const *tab);
-char **my_gettasks_total(void);
-char **my_gettasks_stopped(void);
 int count_tasks(char *path);
 void my_getcpupercent(sys_info_t *SYS);
 void my_get_users_number(sys_info_t *SYS);
-int read_dir(char *path);
+int read_dir_tasks(char *path, sys_info_t *SYS);
 int my_char_isnum(char const letter);
 void init(sys_info_t *SYS);
 

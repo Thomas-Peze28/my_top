@@ -30,21 +30,3 @@ char **my_gettime(void)
 
     return arr2;
 }
-
-char **my_gettasks_total(void)
-{
-    char *str = fs_return_full_open_file("/proc/stat");
-    char **arr = my_str_to_word_array02(str, '\n');
-    char **arr2 = my_str_to_word_array02(arr[17], ' ');
-
-    return arr2;
-}
-
-char **my_gettasks_stopped(void)
-{
-    char *str = fs_return_full_open_file("/proc/stat");
-    char **arr = my_str_to_word_array02(str, '\n');
-    char **arr2 = my_str_to_word_array02(arr[18], ' ');
-
-    return arr2;
-}

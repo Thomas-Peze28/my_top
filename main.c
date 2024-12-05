@@ -22,11 +22,13 @@ void print_third_line(sys_info_t SYS)
             , CPU.us, CPU.sy, CPU.ni, CPU.id, CPU.wa, CPU.hi, CPU.si, CPU.st);
 }
 
-void display_task_list(void)
+void display_mem(sys_info_t SYS)
 {
-    for (int line = 7; line < count_tasks("/proc/"); line++) {
-        mvprintw(line, 0, "%d", line);
-    }
+    mvprintw(3, 0, "MiB Mem : %-.1f total, %-.1f free, %-.1f used,\n"
+        , MEM.total, MEM.free, MEM.used);
+    mvprintw(4, 0, "MiB Swap:  %-.1f total, %-.1f free, %-.1f used."
+        " %-.1f avail Mem\n"
+        , MEM.swap_total, MEM.swap_free, MEM.swap_used, MEM.available);
 }
 
 void display_window(sys_info_t SYS)
@@ -35,14 +37,12 @@ void display_window(sys_info_t SYS)
         clear();
         init(&SYS);
         print_first_line(SYS);
-        mvprintw(1, 0, "Tasks: %d total, %s running, %d sleeping, %s stopped\n"
-            , TASK.total, TASK.running, TASK.sleeping, TASK.stopped);
+        mvprintw(1, 0, "Tasks: %d total, %d running, %d sleeping"
+            ", %d stopped %d zombie\n"
+            , TASK.total, TASK.running, TASK.sleeping
+            , TASK.stopped, TASK.zombie);
         print_third_line(SYS);
-        mvprintw(3, 0, "MiB Mem : %-.1f total, %-.1f free, %-.1f used,\n"
-            , MEM.total, MEM.free, MEM.used);
-        mvprintw(4, 0, "MiB Swap:  %-.1f total, %-.1f free, %-.1f used."
-            " %-.1f avail Mem\n"
-            , MEM.swap_total, MEM.swap_free, MEM.swap_used, MEM.available);
+        display_mem(SYS);
         attron(A_REVERSE);
         mvprintw(6, 0, "PID USER    PR  NI    VIRT    RES"
             "SHR S  %%CPU  %%MEM    TIME+ COMMAND");
@@ -62,5 +62,11 @@ int main(void)
     keypad(stdscr, TRUE);
     curs_set(0);
     display_window(SYS);
+    init(&SYS);
+    printf("TOTAL %d\n", SYS.tasks.total);
+    printf("RUNNING %d\n", SYS.tasks.running);
+    printf("SLEEP : %d\n", SYS.tasks.sleeping);
+    printf("STOPPED : %d\n", SYS.tasks.stopped);
+    printf("ZOMBIE : %d\n", SYS.tasks.zombie);
     return 0;
 }

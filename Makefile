@@ -10,6 +10,7 @@ SRC	=	main.c	\
 		setting_up.c	\
 		my_get.c	\
 		my_get2.c	\
+		my_get_task_header.c	\
 		init.c	\
 
 NAME	=	my_top

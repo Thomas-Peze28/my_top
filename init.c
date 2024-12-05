@@ -21,8 +21,10 @@ void init(sys_info_t *SYS)
     SYS->memory.swap_used = atof(mem_info[11]) / 1024;
     SYS->loadavg = my_getloaddavg();
     SYS->time = my_gettime()[1];
-    SYS->tasks.total = count_tasks("/proc/");
-    SYS->tasks.running = my_gettasks_total()[1];
-    SYS->tasks.stopped = my_gettasks_stopped()[1];
-    SYS->tasks.sleeping = SYS->tasks.total - atoi(SYS->tasks.running);
+    SYS->tasks.total = 0;
+    SYS->tasks.running = 0;
+    SYS->tasks.stopped = 0;
+    SYS->tasks.sleeping = 0;
+    SYS->tasks.zombie = 0;
+    read_dir_tasks("/proc/", SYS);
 }
