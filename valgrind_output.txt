@@ -1,2 +1,0 @@
-valgrind: Unknown option: --progress-rate=0
-valgrind: Use --help for more information or consult the user manual.
