@@ -30,7 +30,7 @@ void my_gettime(void)
 
     if (fscanf(file, "rtc_time : %2s:%2s:%2s\n"
         , hours, minutes, seconds) == 3) {
-        mvprintw(0, 6, "%s:%s:%s", hours, minutes, seconds);
+        mvprintw(0, 6, "%s:%s:%s,", hours, minutes, seconds);
     }
     fclose(file);
 }

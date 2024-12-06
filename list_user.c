@@ -13,7 +13,10 @@ int get_uid(char *filepath)
     char **arr2 = my_str_to_word_array02(arr[8], '\t');
     int uid;
 
+    free(str);
+    free(arr);
     uid = atoi(arr2[1]);
+    free(arr2);
     return uid;
 }
 
