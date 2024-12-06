@@ -48,8 +48,8 @@ void display_window(sys_info_t SYS)
             "PID", "USER", "PR", "NI", "VIRT");
         attroff(A_REVERSE);
         read_pid();
-        read_priority();
         read_user();
+        read_priority();
         refresh();
     }
     endwin();

@@ -23,15 +23,12 @@ char get_tasktatus(char *filepath)
 
 char *buildpath_status(char *pid)
 {
-    char *buffer = malloc(strlen("/proc/") + strlen(pid) + 1);
-    char *buffer2;
-    char *filepath;
+    size_t path_size = strlen("/proc/") + strlen(pid) + strlen("/status") + 1;
+    char *filepath = malloc(path_size);
 
-    strcpy(buffer, "/proc/");
-    filepath = strcat(buffer, pid);
-    buffer2 = malloc(strlen(filepath) + strlen("/status") + 1);
-    strcpy(buffer2, "/status");
-    filepath = strcat(filepath, buffer2);
+    strcpy(filepath, "/proc/");
+    strcat(filepath, pid);
+    strcat(filepath, "/status");
     return filepath;
 }
 

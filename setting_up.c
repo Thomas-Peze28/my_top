@@ -44,7 +44,7 @@ char *fs_return_full_open_file(char const *filepath)
     int fd;
     int size = fs_return_file_size(filepath) - 1;
     char buffer[fs_return_file_size(filepath)];
-    char *dest = malloc(fs_return_file_size(filepath));
+    char *dest = malloc(fs_return_file_size(filepath) + 1);
 
     fd = open(filepath, O_RDONLY);
     read(fd, buffer, size);

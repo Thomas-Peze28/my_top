@@ -8,15 +8,12 @@
 
 char *buildpath_stat(char *pid)
 {
-    char *buffer = malloc(strlen("/proc/") + strlen(pid) + 1);
-    char *buffer2;
-    char *filepath;
+    size_t path_size = strlen("/proc/") + strlen(pid) + strlen("/stat") + 1;
+    char *filepath = malloc(path_size);
 
-    strcpy(buffer, "/proc/");
-    filepath = strcat(buffer, pid);
-    buffer2 = malloc(strlen(filepath) + strlen("/stat") + 1);
-    strcpy(buffer2, "/stat");
-    filepath = strcat(filepath, buffer2);
+    strcpy(filepath, "/proc/");
+    strcat(filepath, pid);
+    strcat(filepath, "/stat");
     return filepath;
 }
 
@@ -26,6 +23,8 @@ int get_pr(char *filepath)
     char **arr = my_str_to_word_array02(str, ' ');
     int pr = atoi(arr[17]);
 
+    free(str);
+    free(arr);
     return pr;
 }
 
@@ -35,18 +34,20 @@ int get_ni(char *filepath)
     char **arr = my_str_to_word_array02(str, ' ');
     int ni = atoi(arr[18]);
 
+    free(str);
+    free(arr);
     return ni;
 }
 
 void display_prio(char *pid, int line)
 {
-    int pr;
-    int ni;
+    char *filepath = buildpath_stat(pid);
+    int pr = get_pr(filepath);
+    int ni = get_ni(filepath);
 
-    pr = get_pr(buildpath_stat(pid));
-    ni = get_ni(buildpath_stat(pid));
-    mvprintw(line, 16, "%3d\n", pr);
-    mvprintw(line, 20, "%3d\n", ni);
+    free(filepath);
+    mvprintw(line, 16, "%3d", pr);
+    mvprintw(line, 20, "%3d", ni);
 }
 
 int read_priority(void)
@@ -54,7 +55,6 @@ int read_priority(void)
     DIR *dir;
     struct dirent *info_dir;
     int line = 7;
-    char *pid;
 
     dir = opendir("/proc/");
     if (dir == NULL)
@@ -63,8 +63,7 @@ int read_priority(void)
     while (info_dir) {
         if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0]
             && line < getmaxy(stdscr))) {
-            pid = info_dir->d_name;
-            display_prio(pid, line);
+            display_prio(info_dir->d_name, line);
             line++;
         }
         info_dir = readdir(dir);
