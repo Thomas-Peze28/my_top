@@ -19,10 +19,10 @@ void my_getcpupercent(sys_info_t *SYS)
 {
     char **temp;
     char **info = my_getcpuusage();
-    float *delta = malloc(sizeof(float) * 9 + 1);
+    float *delta = malloc(sizeof(float) * 10);
     float total = 0;
 
-    sleep(1);
+    sleep(3);
     temp = my_getcpuusage();
     for (int i = 1; i < 9; i++) {
         delta[i] = atof(temp[i]) - atof(info[i]);

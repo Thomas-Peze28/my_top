@@ -6,13 +6,19 @@
 */
 #include "my.h"
 
-char get_status(char *filepath)
+char get_tasktatus(char *filepath)
 {
-    char *str = fs_return_full_open_file(filepath);
-    char **arr = my_str_to_word_array02(str, '\n');
-    char **arr2 = my_str_to_word_array02(arr[2], '\t');
+    FILE *file = fopen(filepath, "r");
+    int status;
+    char line[256];
 
-    return arr2[1][0];
+    while (fgets(line, sizeof(line), file)) {
+        if (sscanf(line, "State: %ls", &status) == 1) {
+            return status;
+        }
+    }
+    fclose(file);
+    return 0;
 }
 
 char *buildpath_status(char *pid)
@@ -31,7 +37,7 @@ char *buildpath_status(char *pid)
 
 void count_tasks_status(sys_info_t *SYS, char *filepath)
 {
-    char status = get_status(filepath);
+    char status = get_tasktatus(filepath);
 
     if (status == 'R')
         SYS->tasks.running++;

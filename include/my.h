@@ -25,7 +25,6 @@
     #define MEM SYS.memory
 
 typedef struct mem_info_s {
-    char **memusage;
     double total;
     double free;
     double used;
@@ -56,8 +55,12 @@ typedef struct task_info_s {
 } task_info_t;
 
 typedef struct sys_info_s {
-    char **loadavg;
-    char *time;
+    double loadavg1;
+    double loadavg2;
+    double loadavg3;
+    char *hours;
+    char *minutes;
+    char *seconds;
     int user_count;
     task_info_t tasks;
     mem_info_t memory;
@@ -105,20 +108,27 @@ int fs_open_file(char const *filepath);
 char *fs_return_open_file(char const *filepath);
 int fs_return_file_size(char const *filepath);
 char *fs_return_full_open_file(char const *filepath);
-char **my_getloaddavg(void);
+void my_getloaddavg(sys_info_t *SYS);
 char **my_getmemusage(void);
-char **my_gettime(void);
+void my_gettime(void);
 int my_show_word_array(char *const *tab);
 int count_tasks(char *path);
 void my_getcpupercent(sys_info_t *SYS);
 void my_get_users_number(sys_info_t *SYS);
 char *buildpath_status(char *pid);
+char *buildpath_stat(char *pid);
 int get_uid(char *filepath);
 int read_dir_tasks(char *path, sys_info_t *SYS);
 int my_char_isnum(char const letter);
 int read_pid(void);
 int read_user(void);
 int read_priority(void);
+int read_virt(void);
+void init_mem(sys_info_t *SYS);
+int init_swap_total(sys_info_t *SYS);
+int init_swap_free(sys_info_t *SYS);
+int init_swap_cached(sys_info_t *SYS);
+char get_tasktatus(char *filepath);
 void init(sys_info_t *SYS);
 
 #endif /* MY_ */

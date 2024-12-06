@@ -9,10 +9,10 @@
 void print_first_line(sys_info_t SYS)
 {
     mvprintw(0, 0, "top -");
-    mvprintw(0, 6, "%s,", SYS.time);
+    my_gettime();
     mvprintw(0, 16, "%d user,", SYS.user_count);
-    mvprintw(0, 25, "load average: %s, %s, %s\n"
-        , SYS.loadavg[0], SYS.loadavg[1], SYS.loadavg[2]);
+    mvprintw(0, 25, "load average: %.2f, %.2f, %.2f\n"
+        , SYS.loadavg1, SYS.loadavg2, SYS.loadavg3);
 }
 
 void print_third_line(sys_info_t SYS)
@@ -44,12 +44,12 @@ void display_window(sys_info_t SYS)
         print_third_line(SYS);
         display_mem(SYS);
         attron(A_REVERSE);
-        mvprintw(6, 0, "%7s %-7s %3s %3s    VIRT    RES"
-            "SHR S  %%CPU  %%MEM    TIME+ COMMAND", "PID", "USER", "PR", "NI");
+        mvprintw(6, 0, "%7s %-7s %3s %3s %7s",
+            "PID", "USER", "PR", "NI", "VIRT");
         attroff(A_REVERSE);
         read_pid();
-        read_user();
         read_priority();
+        read_user();
         refresh();
     }
     endwin();
@@ -65,8 +65,5 @@ int main(void)
     keypad(stdscr, TRUE);
     curs_set(0);
     display_window(SYS);
-    init(&SYS);
-    printf("TOTAL %d\n", SYS.tasks.total);
-    get_uid("/proc/1/status");
     return 0;
 }

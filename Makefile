@@ -14,6 +14,7 @@ SRC	=	main.c	\
 		list_pid.c	\
 		list_user.c	\
 		list_priority.c	\
+		list_virt.c	\
 		init.c	\
 
 NAME	=	my_top

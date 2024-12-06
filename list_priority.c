@@ -61,7 +61,8 @@ int read_priority(void)
         return 84;
     info_dir = readdir(dir);
     while (info_dir) {
-        if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0])) {
+        if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0]
+            && line < getmaxy(stdscr))) {
             pid = info_dir->d_name;
             display_prio(pid, line);
             line++;

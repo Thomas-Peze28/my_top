@@ -6,27 +6,31 @@
 */
 #include "my.h"
 
-char **my_getloaddavg(void)
+void my_getloaddavg(sys_info_t *SYS)
 {
-    char *str = fs_return_open_file("/proc/loadavg");
-    char **arr = my_str_to_word_array02(str, ' ');
+    FILE *file = fopen("/proc/loadavg", "r");
+    double one;
+    double two;
+    double three;
 
-    return arr;
+    if (fscanf(file, "%lf %lf %lf", &one, &two, &three) == 3) {
+        SYS->loadavg1 = one;
+        SYS->loadavg2 = two;
+        SYS->loadavg3 = three;
+    }
+    fclose(file);
 }
 
-char **my_getmemusage(void)
+void my_gettime(void)
 {
-    char *str = fs_return_full_open_file("/proc/meminfo");
-    char **arr = my_str_to_word_array02(str, ' ');
+    char hours[3];
+    char minutes[3];
+    char seconds[3];
+    FILE *file = fopen("/proc/driver/rtc", "r");
 
-    return arr;
-}
-
-char **my_gettime(void)
-{
-    char *str = fs_return_full_open_file("/proc/driver/rtc");
-    char **arr = my_str_to_word_array02(str, '\n');
-    char **arr2 = my_str_to_word_array02(arr[0], ' ');
-
-    return arr2;
+    if (fscanf(file, "rtc_time : %2s:%2s:%2s\n"
+        , hours, minutes, seconds) == 3) {
+        mvprintw(0, 6, "%s:%s:%s", hours, minutes, seconds);
+    }
+    fclose(file);
 }
