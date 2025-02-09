@@ -16,6 +16,7 @@ SRC	=	main.c	\
 		list_priority.c	\
 		list_virt.c	\
 		init.c	\
+		print_lines.c	\
 
 NAME	=	my_top
 

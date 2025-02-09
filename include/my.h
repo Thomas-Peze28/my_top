@@ -130,5 +130,8 @@ int init_swap_free(sys_info_t *SYS);
 int init_swap_cached(sys_info_t *SYS);
 char get_tasktatus(char *filepath);
 void init(sys_info_t *SYS);
+void print_first_line(sys_info_t SYS);
+void print_third_line(sys_info_t SYS);
+
 
 #endif /* MY_ */

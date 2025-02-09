@@ -6,21 +6,63 @@
 */
 #include "my.h"
 
-int get_virt(char *filepath)
+void get_state_info(char *pid, char *state, char *command)
 {
-    char *str = fs_return_full_open_file(filepath);
-    char **arr = my_str_to_word_array02(str, '\n');
-    char **arr2 = my_str_to_word_array02(arr[18], '\t');
-    int pr = atoi(arr2[1]);
+    char *filepath = buildpath_status(pid);
+    FILE *file = fopen(filepath, "r");
+    char line[256];
 
-    return pr;
+    if (file == NULL) {
+        free(filepath);
+        return;
+    }
+    while (fgets(line, sizeof(line), file)) {
+        if (strncmp(line, "State:", 6) == 0)
+            sscanf(line, "State: %c", state);
+        if (strncmp(line, "Name:", 5) == 0)
+            sscanf(line, "Name: %s", command);
+    }
+    fclose(file);
+    free(filepath);
+}
+
+void get_memory_info(char *pid, int *virt, int *res, int *shr)
+{
+    char *filepath = buildpath_status(pid);
+    FILE *file = fopen(filepath, "r");
+    char line[256];
+
+    if (file == NULL) {
+        free(filepath);
+        return;
+    }
+    while (fgets(line, sizeof(line), file)) {
+        if (strncmp(line, "VmSize:", 7) == 0)
+            sscanf(line, "VmSize: %d kB", virt);
+        if (strncmp(line, "VmRSS:", 6) == 0)
+            sscanf(line, "VmRSS: %d kB", res);
+        if (strncmp(line, "RssFile:", 8) == 0)
+            sscanf(line, "RssFile: %d kB", shr);
+    }
+    fclose(file);
+    free(filepath);
 }
 
 void display_virt(char *pid, int line)
 {
-    int virt = get_virt(buildpath_status(pid));
+    int virt = 0;
+    int res = 0;
+    int shr = 0;
+    char state;
+    char command[256];
 
-    mvprintw(line, 27, "%3d\n", virt);
+    get_memory_info(pid, &virt, &res, &shr);
+    get_state_info(pid, &state, command);
+    mvprintw(line, 24, "%8d", virt);
+    mvprintw(line, 33, "%8d", res);
+    mvprintw(line, 42, "%8d", shr);
+    mvprintw(line, 51, "%c", state);
+    mvprintw(line, 53, "%s", command);
 }
 
 int read_virt(void)
