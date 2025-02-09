@@ -24,6 +24,9 @@ int get_pr(char *filepath)
     int pr = atoi(arr[17]);
 
     free(str);
+    for (int i = 0; arr[i] != NULL; i++) {
+        free(arr[i]);
+    }
     free(arr);
     return pr;
 }
@@ -35,6 +38,9 @@ int get_ni(char *filepath)
     int ni = atoi(arr[18]);
 
     free(str);
+    for (int i = 0; arr[i] != NULL; i++) {
+        free(arr[i]);
+    }
     free(arr);
     return ni;
 }
@@ -61,8 +67,8 @@ int read_priority(void)
         return 84;
     info_dir = readdir(dir);
     while (info_dir) {
-        if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0]
-            && line < getmaxy(stdscr))) {
+        if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0])
+            && line < getmaxy(stdscr)) {
             display_prio(info_dir->d_name, line);
             line++;
         }
