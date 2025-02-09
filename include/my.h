@@ -123,7 +123,7 @@ int my_char_isnum(char const letter);
 int read_pid(void);
 int read_user(void);
 int read_priority(void);
-int read_virt(void);
+int read_virt(sys_info_t SYS);
 void init_mem(sys_info_t *SYS);
 int init_swap_total(sys_info_t *SYS);
 int init_swap_free(sys_info_t *SYS);

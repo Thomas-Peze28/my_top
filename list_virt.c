@@ -48,7 +48,7 @@ void get_memory_info(char *pid, int *virt, int *res, int *shr)
     free(filepath);
 }
 
-void display_virt(char *pid, int line)
+void display_virt(char *pid, int line, sys_info_t SYS)
 {
     int virt = 0;
     int res = 0;
@@ -62,10 +62,11 @@ void display_virt(char *pid, int line)
     mvprintw(line, 33, "%8d", res);
     mvprintw(line, 42, "%8d", shr);
     mvprintw(line, 51, "%c", state);
-    mvprintw(line, 53, "%s", command);
+    mvprintw(line, 53, "%4.1f", ((float)res / (float)MEM.total / 1024) * 100);
+    mvprintw(line, 58, "%s", command);
 }
 
-int read_virt(void)
+int read_virt(sys_info_t SYS)
 {
     DIR *dir;
     struct dirent *info_dir;
@@ -79,7 +80,7 @@ int read_virt(void)
     while (info_dir) {
         if (info_dir->d_name[0] != '.' && my_char_isnum(info_dir->d_name[0])) {
             pid = info_dir->d_name;
-            display_virt(pid, line);
+            display_virt(pid, line, SYS);
             line++;
         }
         info_dir = readdir(dir);

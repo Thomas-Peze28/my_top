@@ -15,12 +15,12 @@ void display_mem(sys_info_t SYS)
         , MEM.swap_total, MEM.swap_free, MEM.swap_used, MEM.available);
 }
 
-void read_all(void)
+void read_all(sys_info_t SYS)
 {
     read_pid();
     read_user();
     read_priority();
-    read_virt();
+    read_virt(SYS);
 }
 
 void display_window(sys_info_t SYS)
@@ -36,10 +36,11 @@ void display_window(sys_info_t SYS)
         print_third_line(SYS);
         display_mem(SYS);
         attron(A_REVERSE);
-        mvprintw(6, 0, "%7s %-7s %3s %3s %8s %8s %8s %1s %s",
-            "PID", "USER", "PR", "NI", "VIRT", "RES", "SHR", "S", "COMMAND");
+        mvprintw(6, 0, "%7s %-7s %3s %3s %8s %8s %8s %1s %s %s",
+            "PID", "USER", "PR", "NI", "VIRT", "RES", "SHR", "S",
+            "%MEM", "COMMAND");
         attroff(A_REVERSE);
-        read_all();
+        read_all(SYS);
         refresh();
     }
     endwin();
